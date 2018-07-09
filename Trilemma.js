@@ -1,23 +1,27 @@
 function Trilemma(you, your){
-  if(you == 0){ // ホスト側が皇帝の時
-    if(your == 1){ // ゲストが平民
-      alert("皇帝の勝ち");
-    }else if (your == 2) { // ゲストが奴隷
-      alert("奴隷の勝ち");
-    }
-  }else if (you == 1) { // ホスト側が平民の時
-    if(your == 1){
-      alert("引き分け");
-    }else if (your == 2) {
-      alert("平民の勝ち");
-    }else if (your == 0) {
-      alert("皇帝の勝ち");
-    }
-  }else if (you == 2) { // ホスト側が奴隷の時
-    if(your == 1){
-      alert("平民の勝ち");
-    }else if (your == 0) {
-      alert("奴隷の勝ち");
-    }
+  switch (you) {
+    case 0: // 自分が皇帝のカードを出したとき
+      if(your == 1){
+        alert("あなたの勝ち");
+      }else if (your == 2) {
+        alert("あなたの負け");
+      }
+      break;
+    case 1: // 自分が平民のカードを出したとき
+      if(your == 0){
+        alert("あなたの負け");
+      }else if (your == 1) {
+        alert("引き分け");
+      }else {
+        alert("あなたの勝ち");
+      }
+      break;
+    case 2: // 自分が奴隷のカードを出したとき
+      if(your == 0){
+        alert("あなたの勝ち");
+      }else if (your == 1) {
+        alert("あなたの負け");
+      }
+      break;
   }
 }
