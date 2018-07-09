@@ -23,6 +23,10 @@ io.on('connection', (socket)=>{
   // 接続時のメッセージ
   console.log('a user connected');
 
+  socket.on('card', (card)=>{
+    io.emit('card', card);
+    console.log('card' + card);
+  });
   // 切断
   Socket.on('disconnect', ()=>{
     console.log('user disconnected');
