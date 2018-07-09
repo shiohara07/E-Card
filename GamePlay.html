@@ -9,7 +9,16 @@
 
     <script type="text/javascript">
     window.onload = function() {
-      alert("表示されたよ");
+      var you = 0;
+      var your = 0;
+      you = randomv(3);
+      your = randomv(3);
+
+      Trilemma(you, your);
+    }
+
+    function randomv(num){
+      return Math.floor(Math.random() * num);
     }
     </script>
   </body>
