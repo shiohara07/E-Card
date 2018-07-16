@@ -1,25 +1,20 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title>ゲームシーン</title>
-  </head>
-  <body>
-    <canvas id="bg" width="720" height="540"></canvas>
-    <script type="text/javascript" src="Trilemma.js"></script>
-    <script type="text/javascript">
-    window.onload = function() {
-      var you = 0;
-      var your = 0;
-      you = randomv(3);
-      your = randomv(3);
+<html lang="ja" dir="ltr">
 
-      Trilemma(you, your);
-    }
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="GamePlay.css">
+  <script type="text/javascript" src="Card.js"></script>
+  <title>ゲームシーン</title>
+</head>
 
-    function randomv(num){
-      return Math.floor(Math.random() * num);
-    }
-    </script>
-  </body>
+<body onload="init()">
+  <div style="width:100% height:200px" id="play"></div>
+  <canvas id="bg" width="720" height="540"></canvas>
+
+  <!--<script type="text/javascript" src="Trilemma.js"></script>-->
+  <!--三竦み-->
+
+</body>
+
 </html>
