@@ -1,0 +1,114 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf8">
+<title>Socket.IO Chat2</title>
+<style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { font: 13px Helvetica, Arial; }
+      form {}
+      #form1 { background: #000; padding: 3px;  bottom: 0; width: 50%; }
+      #form3 { background: #999; padding: 3px;  bottom: 0; width: 50%; }
+      #form2 { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
+	  form select { border: 0; padding: 10px; width: 78%; height:45px; margin-right: .5%; font-size:12pt; }
+      form input#msg { border: 0; padding: 10px; width: 80%; margin-right: .5%; }
+      form input#createroom { border: 0; padding: 10px; width: 78%; height:45px; margin-right: .5%; }
+      form button#form1btn { width: 20%; background: rgb(130, 224, 255); border: none; padding: 10px; }
+      form button#form2btn { width: 18%; background: rgb(130, 224, 255); border: none; padding: 10px; }
+      form button#form3btn { width: 20%; background: rgb(130, 224, 255); border: none; padding: 10px; }
+	  strong {color:red; font-weight: bold; font-size:12pt; }
+      #messages { list-style-type: none; margin: 0; padding: 0; }
+      #messages li { padding: 5px 10px; }
+      #messages li:nth-child(odd) { background: #eee; }
+</style>
+</head>
+<body>
+
+<!-- チャットメッセージ表示 -->
+<ul id="messages"></ul>
+
+<!-- 入力フォーム -->
+<form name='roomForm' id="form1" style=float:left;>
+	<select name='roomSel' id="room">
+	</select>
+	<button id="form1btn">部屋に入る</button>
+</form>
+<form id="form3" style=float:right;>
+  <input id="createroom" autocomplete="on" />
+  <button id="form3btn">ルーム作成</button>
+</form>
+<form id="form2" style="display: none">
+	<input id="msg" autocomplete="off" /><button id="form2btn">送信</button>
+</form>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+window.onload = () => {
+	let socket = io();
+	let room;
+
+  document.querySelector("#form3").addEventListener("submit", (e)=>{
+    //画面を遷移させない
+		e.preventDefault();
+    let roomname = document.querySelector("#createroom");
+    if(roomname != null){
+      let sObj=document.forms["roomForm"].elements["roomSel"];
+      let idx=sObj.length;
+      sObj.options[idx]=new Option(roomname.value, roomname.value);
+    }
+  });
+	//------------------------------------
+	// 部屋に入る
+	//------------------------------------
+	document.querySelector("#form1").addEventListener("submit", (e)=>{
+		//画面を遷移させない
+		e.preventDefault();
+
+		//サーバに送信
+		room = document.querySelector("#room").value;
+		socket.emit('join', {room:room});
+
+    // 入った部屋を表示
+    addMessage(`<strong>${room}</strong> に入室しました`);
+
+		//入力欄を切り替える
+		document.querySelector("#form1").style.display = "none";		//非表示
+    document.querySelector("#form3").style.display = "none";		//非表示
+		document.querySelector("#form2").style.display = "block";		//表示
+	});
+
+	//------------------------------------
+	// メッセージ送信
+	//------------------------------------
+	document.querySelector("#form2").addEventListener("submit", (e)=>{
+		//画面を遷移させない
+		e.preventDefault();
+
+		//サーバに送信
+		let msg = document.querySelector("#msg");
+		socket.emit('chat message', {room:room, value:msg.value});
+
+		//テキストボックスを空にする
+		msg.value = "";
+	});
+
+	//------------------------------------
+	// メッセージ受信
+	//------------------------------------
+	socket.on('chat message', (msg)=>{
+		addMessage(msg.value);
+	});
+
+
+	/**
+	 * メッセージを画面に表示
+	 **/
+	function addMessage(msg){
+		let messages = document.querySelector("#messages");
+		let html     = messages.innerHTML;
+		messages.innerHTML = html + `<li>${msg}</li>`;
+	}
+}
+</script>
+</body>
+</html>
